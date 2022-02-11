@@ -54,8 +54,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", id: "ssh", host: 2212, guest: 22  # custom ssh port
   config.vm.network "private_network", ip: "192.168.56.10"
   config.vm.hostname = PROJECT_HOSTNAME
-  config.vm.synced_folder "./www", "/var/www", :mount_options => ["dmode=777", "fmode=666"]
-  config.vm.synced_folder "./.ssl", "/vagrant/.ssl", :mount_options => ["dmode=775", "fmode=644"]
+  config.vm.synced_folder "./", "/vagrant", id: "vagrant-root", owner: "vagrant", group: "www-data", :mount_options => ["dmode=775", "fmode=664"]
+
   
   # Auto setup vhosts at: /etc/hosts
   # https://github.com/devopsgroup-io/vagrant-hostmanager
@@ -68,5 +68,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: ".vagrant-scripts/elastic-setup.sh"
   config.vm.provision "shell", path: ".vagrant-scripts/mysql-setup.sh"
   config.vm.provision "shell", path: ".vagrant-scripts/supervisor-setup.sh"
+
+  # Setup project
+  # config.vm.provision "shell", path: ".vagrant-scripts/project-setup.sh"
 
 end

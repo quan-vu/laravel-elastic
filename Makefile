@@ -6,7 +6,8 @@ down:
 
 clean:
 	vagrant destroy
-
+	rm -rf .vagrant
+	
 reload:
 	vagrant reload
 
