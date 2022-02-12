@@ -7,7 +7,7 @@ down:
 clean:
 	vagrant destroy
 	rm -rf .vagrant
-	
+
 reload:
 	vagrant reload
 
@@ -24,6 +24,10 @@ ssh-config:
 info:
 	vagrant ssh -c "php --version"
 	vagrant ssh -c "mysql --version"
+
+create-project:
+	composer create-project laravel/laravel ./www
+	vagrant ssh -c "php artisan key:generate"
 	
 	
 
