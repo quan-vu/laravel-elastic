@@ -31,8 +31,8 @@ sudo sed -i "s/{{DOMAIN}}/$PROJECT_HOSTNAME/g" /etc/nginx/sites-available/defaul
 sudo nginx -t
 
 # Create index.php
-sudo touch /vagrant/www/public/index.php
-echo "<?php phpinfo(); ?>" > /vagrant/www/public/index.php
+# sudo touch /vagrant/www/public/index.php
+# echo "<?php phpinfo(); ?>" > /vagrant/www/public/index.php
 
 # Restart nginx
 sudo service nginx restart
