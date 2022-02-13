@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
+use App\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid, Sluggable;
 
     protected $fillable = [
         'id',
