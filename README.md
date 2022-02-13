@@ -43,6 +43,24 @@ curl -X GET "localhost:9200"
 }
 ```
 
+## Database
+
+We will import sample database for test Elastic search with categories and about 10 million of products into MySQL database.
+
+And run a start laravel queue to make index for products to Elastic.
+
+Import big database
+
+```shell
+laravel_elastic.sql
+```
+
+Run command to indexing products to Elastic
+
+```shell
+php artisan queue:work --queue=high,default
+```
+
 ## Reference
 
 - [Install Elastic 7.x](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/install-elasticsearch.html)

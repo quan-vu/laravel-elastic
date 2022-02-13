@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ProductController::class)->group(function () {
         Route::get('/products', 'index')->name('api.products.list');
+        Route::get('/products/search/{keyword}', 'search')->name('api.products.search');
         Route::post('/products', 'store')->name('api.products.store');
+        Route::put('/products/{id}', 'update')->name('api.products.update');
     });
 });

@@ -3,13 +3,18 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Elasticquent\ElasticquentResultCollection;
 
 class ProductService implements IProductService
 {
 
-    public function search(string $text)
+    public function search(string $keyword): ElasticquentResultCollection
     {
-        // TODO: Implement search() method.
+        return Product::searchByQuery([
+            'match' => [
+                'title' => $keyword
+            ]
+        ]);
     }
 
     public function paginate(array $filter)
@@ -20,13 +25,17 @@ class ProductService implements IProductService
 
     public function store(array $attributes): Product
     {
-        return Product::create($attributes)->refresh();
+        $product = Product::create($attributes)->refresh();
+        $product->addAllToIndex();
+        return $product;
     }
 
-    public function update(array $attributes): Product
+    public function update(string $id, array $attributes): Product
     {
-        // TODO: Implement update() method.
-        return new Product();
+        $product = Product::find($id);
+        $product->update($attributes);
+        $product->reindex();
+        return $product;
     }
 
     public function delete(string $uuid): bool

@@ -3,17 +3,21 @@
 namespace Tests;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BaseTestCase extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $tester;
+
     protected function getTesterUser()
     {
         $email = 'tester01@example.com';
-        $user = User::where(['email' => $email])->first();
-        if (!$user) {
-            User::factory()->create(['email' => $email]);
+        if (! $this->tester) {
+            $this->tester = User::factory()->create(['email' => $email]);
         }
-        return $user;
+        return $this->tester;
     }
 
     protected function getToken(string $tokenName = 'Personal Access Token')

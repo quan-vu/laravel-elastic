@@ -13,7 +13,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return (bool) $this->user();
     }
 
     /**
@@ -24,7 +24,11 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'string',
+            'thumbnail' => 'string',
+            'description' => 'string',
+            'content' => 'string',
+            'category_id' => 'integer',
         ];
     }
 }

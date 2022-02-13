@@ -8,6 +8,7 @@ use App\Http\Resources\ProductDetailResource;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ProductController extends Controller
@@ -22,25 +23,18 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
+     * Search products by keyword from Elastic Search
+     * @param Request $request
+     * @param string $keyword
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function search(Request $request, string $keyword): JsonResponse
     {
-        $filter = [];
-        $products = $this->productService->paginate($filter);
-        return $this->success($products, 'Retrieve products successful.');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
+        $searchResult = $this->productService->search($keyword);
+        if ($request->input('dump') == 1) {
+            $searchResult = $searchResult->getHits();
+        }
+        return $this->success($searchResult, "Search products successful.");
     }
 
     /**
@@ -56,37 +50,16 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Product $product
-     * @return Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Product $product
-     * @return Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param UpdateProductRequest $request
      * @param Product $product
      * @return Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, string $id)
     {
-        //
+        $product = $this->productService->update($id, $request->all());
+        return $this->success(new ProductDetailResource($product), "Update product successful.");
     }
 
     /**
